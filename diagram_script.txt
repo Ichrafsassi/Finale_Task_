@@ -1,0 +1,42 @@
+// Define the Users Table
+Table users {
+  id int [pk, increment]
+  first_name varchar(50) [not null]
+  last_name varchar(50) [not null]
+  email varchar(120) [unique, not null]
+  phone_number varchar(20) [unique, not null]
+  password varchar(128) [not null]
+  role varchar(10) [default: 'user']  // -> default role as 'user'
+}
+
+// Define the Products Table
+Table products {
+  id int [pk, increment]
+  name varchar(100) [not null]
+  price decimal(10, 2) [not null]
+  description text
+}
+
+// Define the Orders Table
+Table orders {
+  id int [pk, increment]
+  user_id int [not null]
+  total_amount decimal(10, 2) [not null]
+  created_at timestamp
+}
+
+// Define the OrderItems Table
+Table order_items {
+  id int [pk, increment]
+  order_id int [not null]
+  product_id int [not null]
+  quantity int [not null]
+}
+
+// Define the Relationships
+// Many-to-one: A user can have multiple orders
+Ref: orders.user_id > users.id
+ // Many-to-one: An order can have multiple order items
+Ref: order_items.order_id > orders.id
+// Many-to-one: An order item is linked to one product
+Ref: order_items.product_id > products.id
